@@ -47,13 +47,13 @@ def extract_skel_data(data):
             for joint in range(num_joints):
                 line += 1
                 temp_data = data[line].strip("\r\n").split()
-                body_data["skel_body"][frame, j] = np.array(
+                body_data["skel_body"][frame, joint] = np.array(
                     temp_data[:3], dtype=np.float32
                 )
-                body_data["rgb_body"][frame, j] = np.array(
+                body_data["rgb_body"][frame, joint] = np.array(
                     temp_data[5:7], dtype=np.float32
                 )
-                body_data["depth_body"][frame, j] = np.array(
+                body_data["depth_body"][frame, joint] = np.array(
                     temp_data[3:5], dtype=np.float32
                 )
 
