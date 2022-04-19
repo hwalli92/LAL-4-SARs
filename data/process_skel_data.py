@@ -11,6 +11,32 @@ def find_all(action, path):
     return result
 
 
+def process_files(datalist):
+
+    action_data = []
+
+    for idx, file in enumerate(datalist):
+        print(idx, file)
+        data = dict()
+
+        with open(path + file, "r") as fr:
+            str_data = fr.readlines()
+
+        data["setup"] = int(file[1:4])
+        data["camera"] = int(file[5:8])
+        data["subject"] = int(file[9:12])
+        data["replication"] = int(file[13:16])
+        data["action"] = int(file[17:20])
+
+        data["nframes"], data["nbodies"], data["bodies_data"] = extract_skel_data(
+            str_data
+        )
+
+        action_data.append(data)
+
+    return action_data
+
+
 def extract_skel_data(data):
 
     num_frames = int(data[0].strip("\r\n"))
@@ -59,13 +85,8 @@ def extract_skel_data(data):
 
             bodies_data[body] = body_data
 
-#    for b in range(4):
-#        print(b)
-#        if b >= max(num_bodies):
-#            bodies_data.pop(b)
-
     if len(num_bodies) > 0:
-        bodies_data = bodies_data[:max(num_bodies)]
+        bodies_data = bodies_data[: max(num_bodies)]
         num_bodies = max(num_bodies)
     else:
         num_bodies = 0
@@ -75,27 +96,12 @@ def extract_skel_data(data):
 
 if __name__ == "__main__":
     path = "/media/ntfs-data/datasets/ntu/nturgb+d_60_skeletons/"
-    datalist = find_all("A001", path)
+    actions = [1, 2, 3, 5, 6, 7, 8, 9, 10, 23, 24, 26, 27, 29, 31, 34, 35, 36, 39, 40]
 
-    action_data = []
+    for action in actions:
+        datalist = find_all("A" + str(action).zfill(3), path)
 
-    for idx, file in enumerate(datalist):
-        print(idx, file)
-        data = dict()
+        action_data = process_files(datalist)
 
-        with open(path + file, "r") as fr:
-            str_data = fr.readlines()
-
-        data["setup"] = int(file[1:4])
-        data["camera"] = int(file[5:8])
-        data["subject"] = int(file[9:12])
-        data["replication"] = int(file[13:16])
-        data["action"] = int(file[17:20])
-
-        data["nframes"], data["nbodies"], data["bodies_data"] = extract_skel_data(
-            str_data
-        )
-
-        action_data.append(data)
-    with open("raw_data/A001.pkl", "wb") as fw:
-        pickle.dump(action_data, fw, pickle.HIGHEST_PROTOCOL)
+        with open("raw_data/A" + str(action).zfill(3).pkl, "wb") as fw:
+            pickle.dump(action_data, fw, pickle.HIGHEST_PROTOCOL)
