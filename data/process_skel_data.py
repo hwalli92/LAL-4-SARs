@@ -103,5 +103,5 @@ if __name__ == "__main__":
 
         action_data = process_files(datalist)
 
-        with open("raw_data/A" + str(action).zfill(3).pkl, "wb") as fw:
+        with open("raw_data/A" + str(action).zfill(3) + ".pkl", "wb") as fw:
             pickle.dump(action_data, fw, pickle.HIGHEST_PROTOCOL)
