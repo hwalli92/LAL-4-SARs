@@ -59,11 +59,18 @@ def extract_skel_data(data):
 
             bodies_data[body] = body_data
 
-    for b in range(4):
-        if b >= max(num_bodies):
-            bodies_data.pop(b)
+#    for b in range(4):
+#        print(b)
+#        if b >= max(num_bodies):
+#            bodies_data.pop(b)
 
-    return num_frames, max(num_bodies), bodies_data
+    if len(num_bodies) > 0:
+        bodies_data = bodies_data[:max(num_bodies)]
+        num_bodies = max(num_bodies)
+    else:
+        num_bodies = 0
+
+    return num_frames, num_bodies, bodies_data
 
 
 if __name__ == "__main__":
