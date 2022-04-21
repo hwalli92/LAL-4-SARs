@@ -1,9 +1,20 @@
+"""
+
+Script to collect the NTU skeleton datafiles and sort them into a single file per action. 
+
+Code below adapted from: 
+1. https://github.com/shahroudy/NTURGB-D/blob/master/Python/txt2npy.py
+2. https://github.com/Uason-Chen/CTR-GCN/blob/main/data/ntu/get_raw_skes_data.py
+
+"""
+
+
 import os
 import pickle
 import numpy as np
 
 
-def find_all(action, path):
+def find_all(action, paths):
     result = []
     for file in os.listdir(path):
         if file[16:20] == action:
@@ -11,7 +22,7 @@ def find_all(action, path):
     return result
 
 
-def process_files(datalist):
+def process_files(datalist, path):
 
     action_data = []
 
@@ -101,7 +112,7 @@ if __name__ == "__main__":
     for action in actions:
         datalist = find_all("A" + str(action).zfill(3), path)
 
-        action_data = process_files(datalist)
+        action_data = process_files(datalist, path)
 
         with open("raw_data/A" + str(action).zfill(3) + ".pkl", "wb") as fw:
             pickle.dump(action_data, fw, pickle.HIGHEST_PROTOCOL)
