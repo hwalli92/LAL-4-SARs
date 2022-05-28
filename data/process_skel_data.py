@@ -22,12 +22,17 @@ def find_all(action, paths):
     return result
 
 
-def process_files(datalist, path):
+def process_files(datalist, path, missing_skes):
 
     action_data = []
 
     for idx, file in enumerate(datalist):
         print(idx, file)
+
+        if file.partition(".")[0] in missing_skes:
+           print("Skeleton data missing....skip")
+           continue
+
         data = dict()
 
         with open(path + file, "r") as fr:
@@ -109,10 +114,12 @@ if __name__ == "__main__":
     path = "/media/ntfs-data/datasets/ntu/nturgb+d_60_skeletons/"
     actions = [1, 2, 3, 5, 6, 7, 8, 9, 10, 23, 24, 26, 27, 29, 31, 34, 35, 36, 39, 40]
 
+    missing_skes_name = np.loadtxt("samples_with_missing_skeletons.txt", dtype=str)
+
     for action in actions:
         datalist = find_all("A" + str(action).zfill(3), path)
 
-        action_data = process_files(datalist, path)
+        action_data = process_files(datalist, path, missing_skes_name)
 
         with open("raw_data/A" + str(action).zfill(3) + ".pkl", "wb") as fw:
             pickle.dump(action_data, fw, pickle.HIGHEST_PROTOCOL)
