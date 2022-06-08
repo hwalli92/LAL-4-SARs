@@ -1,0 +1,6 @@
+[submodule "CTR-GCN"]
+	path = CTR-GCN
+	url = https://github.com/Uason-Chen/CTR-GCN.git
+[submodule "MS-G3D"]
+	path = MS-G3D
+	url = https://github.com/kenziyuliu/MS-G3D.git
