@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Project Directories
+work_dir/
+CTR-GCN/
+MS-G3D/
