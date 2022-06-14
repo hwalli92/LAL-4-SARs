@@ -4,3 +4,6 @@
 [submodule "MS-G3D"]
 	path = MS-G3D
 	url = https://github.com/kenziyuliu/MS-G3D.git
+[submodule "EfficientGCNv1"]
+	path = EfficientGCNv1
+	url = https://gitee.com/yfsong0709/EfficientGCNv1.git

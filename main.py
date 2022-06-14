@@ -8,20 +8,28 @@ def main(args):
     if args.model == "ctrgcn":
 
         if args.benchmark == 'xsub':
-            if args.modality is None:
-                work_dir = args.work_dir + "ntu/{}/ctrgcn_joint".format(args.benchmark)
-                subprocess.call('python3 CTR-GCN/main.py --config config/nturgbd-cross-subject/default.yaml --work-dir {} --device {}'.format(work_dir, args.device), shell=True)
+            work_dir = args.work_dir + "ntu/{}/ctrgcn_{}".format(args.benchmark, args.modality)
+            subprocess.call('python3 CTR-GCN/main.py --config config/ctrgcn/nturgbd-cross-subject/train_{}.yaml --work-dir {} --device {}'.format(args.modality, work_dir, args.device), shell=True)
 
-            else:
-               d work_dir = args.work_dir + "ntu/{}/ctrgcn_{}".format(args.benchmark, args.modality)
-                subprocess.call('python3 CTR-GCN/main.py --config config/nturgbd-cross-subject/default.yaml --train_feeder_args {}=True --test_feeder_args {}=True --work-dir {} --device {}'.format(
-                                 args.modality, args.modality, work_dir, args.device),
-                                 shell=True)
+        elif args.benchmark == 'xview':
+            work_dir = args.work_dir + "ntu/{}/ctrgcn_{}".format(args.benchmark, args.modality)
+            subprocess.call('python3 CTR-GCN/main.py --config config/ctrgcn/nturgbd-cross-view/train_{}.yaml --work-dir {} --device {}'.format(args.modality, work_dir, args.device), shell=True)
+
+        else:
+            print("Invalid Benchmark")
 
     elif args.model == "msg3d":
 
-        work_dir = args.work_dir + "ntu/{}/msg3d_{}".format(args.benchmark, args.modality)
-        print(work_dir)
+        if args.benchmark == 'xsub':
+            work_dir = args.work_dir + "ntu/{}/msg3d_{}".format(args.benchmark, args.modality)
+            subprocess.call('python3 MS-G3D/main.py --config config/msg3d/nturgbd-cross-subject/train_{}.yaml --work-dir {} --device {}'.format(args.modality, work_dir, args.device), shell=True)
+
+        elif args.benchmark == 'xview':
+            work_dir = args.work_dir + "ntu/{}/ctrgcn_{}".format(args.benchmark, args.modality)
+            subprocess.call('python3 MS-G3D/main.py --config config/msg3d/nturgbd-cross-view/train_{}.yaml --work-dir {} --device {}'.format(args.modality, work_dir, args.device), shell=True)
+
+        else:
+            print("Invalid Benchmark")
 
     else:
         print("Invalid Model")
@@ -35,7 +43,7 @@ if __name__ == "__main__":
     parser.add_argument('--device', type=int, default=0)
     parser.add_argument('--phase', default='train')
     parser.add_argument('--benchmark', default='xsub')
-    parser.add_argument('--modality', default=None)
+    parser.add_argument('--modality', default='joint')
 #    parser.add_argument()
 #    parser.add_argument()
 
