@@ -31,6 +31,21 @@ def main(args):
         else:
             print("Invalid Benchmark")
 
+    elif args.model == "efficientgcn":
+
+        if args.benchmark == '2009' or args.benchmark == '2021':
+            work_dir = '../' + args.work_dir + "efficientgcn/{}".format(args.benchmark)
+            subprocess.call('python3 EfficientGCNv1/main.py -c {} -gd'.format(args.benchmark), shell=True)
+            subprocess.call('python3 EfficientGCNv1/main.py -c {} -g {}'.format(args.benchmark, args.device), shell=True)
+
+        elif args.benchmark == '2010' or args.benchmark == '2022':
+            work_dir = args.work_dir + "ntu/xview/efficientgcn_{}".format(args.benchmark)
+            subprocess.call('python3 EfficientGCNv1/main.py --c ../config/efficientgcn/{}.yaml -gd'.format(args.benchmark), shell=True)
+            subprocess.call('python3 EfficientGCNv1/main.py --c ../config/efficientgcn/{}.yaml -w {} -g {}'.format(args.benchmark, work_dir, args.device), shell=True)
+
+        else:
+            print("Invalid Benchmark")
+
     else:
         print("Invalid Model")
 
