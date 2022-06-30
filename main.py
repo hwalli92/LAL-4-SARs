@@ -46,6 +46,26 @@ def main(args):
         else:
             print("Invalid Benchmark")
 
+    elif args.model == "vacnn":
+
+        if args.benchmark == 'xsub':
+            data_dir = "VA_NN/data/"
+            config_dir = "VA_NN/config/"
+            weights_dir = "VA_NN/weights/"
+            logs_dir = "VA_NN/logs/"
+            subprocess.call('python3 VA_NN/main_cnn.py --dataset_dir {} --dataset_name cs --cfg_dir {} --save_dir {} --log_dir {}'.format(data_dir, config_dir, weights_dir, logs_dir), shell=True)
+
+        elif args.benchmark == 'xview':
+            data_dir = "VA_NN/data/"
+            config_dir = "VA_NN/config/"
+            weights_dir = "VA_NN/weights/"
+            logs_dir = "VA_NN/logs/"
+            subprocess.call('python3 VA_NN/main_cnn.py --dataset_dir {} --dataset_name cv --cfg_dir {} --save_dir {} --log_dir {}'.format(data_dir, config_dir, weights_dir, logs_dir), shell=True)
+
+        else:
+            print("Invalid Benchmark")
+
+
     else:
         print("Invalid Model")
 
@@ -59,8 +79,6 @@ if __name__ == "__main__":
     parser.add_argument('--phase', default='train')
     parser.add_argument('--benchmark', default='xsub')
     parser.add_argument('--modality', default='joint')
-#    parser.add_argument()
-#    parser.add_argument()
 
     args = parser.parse_args()
 
