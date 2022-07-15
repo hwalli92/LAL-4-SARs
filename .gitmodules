@@ -10,3 +10,6 @@
 [submodule "VA_NN"]
 	path = VA_NN
 	url = https://github.com/jiamingNo1/VA_NN.git
+[submodule "FACIL"]
+	path = FACIL
+	url = https://github.com/mmasana/FACIL.git
