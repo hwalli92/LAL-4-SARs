@@ -65,6 +65,25 @@ def main(args):
         else:
             print("Invalid Benchmark")
 
+    elif args.model == "varnn":
+
+        if args.benchmark == 'xsub':
+            data_dir = "VA_NN/data/"
+            config_dir = "VA_NN/config/"
+            weights_dir = "VA_NN/weights/"
+            logs_dir = "VA_NN/logs/"
+            subprocess.call('python3 VA_NN/main_rnn.py --dataset_dir {} --dataset_name cs --cfg_dir {} --save_dir {} --log_dir {}'.format(data_dir, config_dir, weights_dir, logs_dir), shell=True)
+
+        elif args.benchmark == 'xview':
+            data_dir = "VA_NN/data/"
+            config_dir = "VA_NN/config/"
+            weights_dir = "VA_NN/weights/"
+            logs_dir = "VA_NN/logs/"
+            subprocess.call('python3 VA_NN/main_rnn.py --dataset_dir {} --dataset_name cv --cfg_dir {} --save_dir {} --log_dir {}'.format(data_dir, config_dir, weights_dir, logs_dir), shell=True)
+
+        else:
+            print("Invalid Benchmark")
+
 
     else:
         print("Invalid Model")
