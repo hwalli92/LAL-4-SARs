@@ -130,7 +130,7 @@ dmypy.json
 
 # Project Directories
 work_dir/
-results/
+#results/
 CTR-GCN/
 MS-G3D/
 EfficientGCNv1/
