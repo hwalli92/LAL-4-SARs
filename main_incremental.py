@@ -165,6 +165,19 @@ def main(argv=None):
         net = getattr(sys.modules[mod_str], class_str)
         init_model = net(**args.model_args)
         init_model.head_var = 'fc'
+    elif args.network == "efficientgcnsg":
+        sys.path.append('./EfficientGCNv1')
+        import src.model as model
+        from src.dataset.graphs import Graph
+        graph = Graph(args.datasets[0])
+        kwargs = {
+            'data_shape': args.data_shape,
+            'num_class': args.num_classes,
+            'A': torch.Tensor(graph.A),
+            'parts': graph.parts,
+        }
+        init_model = model.create(args.model_type, **(args.model_args), **kwargs)
+        init_model.head_var = 'classifier.fc'
     else:  # other models declared in networks package's init
         net = getattr(importlib.import_module(name='networks'), args.network)
         # WARNING: fixed to pretrained False for other model (non-torchvision)
@@ -268,7 +281,7 @@ def main(argv=None):
     acc_tag = np.zeros((max_task, max_task))
     forg_taw = np.zeros((max_task, max_task))
     forg_tag = np.zeros((max_task, max_task))
-    for t, (_, ncla) in enumerate(taskcla):
+    for t, (_, ncla, trn_tsk) in enumerate(taskcla):
         # Early stop tasks if flag
         if t >= max_task:
             continue
@@ -305,7 +318,8 @@ def main(argv=None):
             print('-' * 108)
 
         # Train
-        appr.train(t, trn_loader[t], val_loader[t])
+        appr.train(t, trn_loader[t], val_loader[t], trn_tsk)
+
         print('-' * 108)
 
         # Test
