@@ -77,3 +77,51 @@ msg3d:
   forward_batch_size: 16
   test_batch_size: 32
   nesterov: True
+
+# EfficientGCN
+efficientgcnsg:
+  data_shape: [1, 6, 300, 25, 2]
+  num_classes: 20
+  train_data_args:
+    random_choose: False
+    random_shift: False
+    random_move: False
+    window_size: 64
+    normalization: False
+    p_interval: [0.5, 1]
+    vel: False
+    bone: False
+
+  test_data_args:
+    window_size: 64
+    p_interval: [0.95]
+    vel: False
+    bone: False
+
+  model_type: EfficientGCN-B4
+  model_args:
+    stem_channel: 64
+    block_args: [[48,1,0.5],[24,1,0.5],[64,2,1],[128,2,1]]
+    fusion_stage: 2
+    act_type: swish
+    att_type: stja
+    layer_type: SG
+    drop_prob: 0.25
+    kernel_size: [5,2]
+    scale_args: [1.2,1.35]
+    expand_ratio: 0
+    reduct_ratio: 2
+    bias: True
+    edge: True
+
+# optim
+  weight_decay: 0.0001
+  lr: 0.1
+  lr_patience: 20
+  momentum: 0.9
+
+# training
+  nepochs: 70
+  batch_size: 16
+  test_batch_size: 16
+  nesterov: True
