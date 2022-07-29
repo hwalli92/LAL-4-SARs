@@ -1,3 +1,12 @@
+# Task Args
+task_args:
+  num_tasks: 10
+  cpertask: None
+#  cpertask: [2, 2, 3, 2, 3, 2, 3, 1, 2]
+  skip_tasks: []
+  moved_tasks: []
+  dest_tasks: []
+
 # CTR-GCN
 ctrgcn:
   train_data_args:
@@ -37,6 +46,7 @@ ctrgcn:
   batch_size: 64
   test_batch_size: 64
   nepochs: 65
+#  nepochs: 2
   nesterov: True
 
 # MS-G3D

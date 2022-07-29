@@ -24,7 +24,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description='FACIL - Framework for Analysis of Class Incremental Learning')
 
     # miscellaneous args
-    parser.add_argument('--gpu', type=int, default=0,
+    parser.add_argument('--gpu', type=int, default=1,
                         help='GPU (default=%(default)s)')
     parser.add_argument('--results-path', type=str, default='results',
                         help='Results path (default=%(default)s)')
@@ -103,8 +103,10 @@ def main(argv=None):
     args, extra_args = parser.parse_known_args(argv)
     args.results_path = os.path.expanduser(args.results_path)
     with open(args.config, 'r') as f:
-        default_arg = yaml.load(f)[args.network]
+        config_args = yaml.load(f)
 
+    default_arg = config_args['task_args']
+    default_arg.update(config_args[args.network])
     key = vars(args).keys()
 #    for k in default_arg.keys():
 #        if k not in key:
@@ -239,12 +241,13 @@ def main(argv=None):
     if 'ntu' in args.datasets:
         trn_loader, val_loader, tst_loader, taskcla = get_loaders(args.datasets, args.num_tasks, args.nc_first_task,
                                                               args.batch_size, num_workers=args.num_workers,
-                                                              pin_memory=args.pin_memory, train_args=args.train_data_args,
-                                                              test_args=args.test_data_args)
+                                                              pin_memory=args.pin_memory, cpertask=None, skip_tasks=args.skip_tasks,
+                                                              train_args=args.train_data_args, test_args=args.test_data_args)
     else:
         trn_loader, val_loader, tst_loader, taskcla = get_loaders(args.datasets, args.num_tasks, args.nc_first_task,
                                                               args.batch_size, num_workers=args.num_workers,
                                                               pin_memory=args.pin_memory)
+
     # Apply arguments for loaders
     if args.use_valid_only:
         tst_loader = val_loader
@@ -277,10 +280,12 @@ def main(argv=None):
 
     # Loop tasks
     print(taskcla)
-    acc_taw = np.zeros((max_task, max_task))
-    acc_tag = np.zeros((max_task, max_task))
-    forg_taw = np.zeros((max_task, max_task))
-    forg_tag = np.zeros((max_task, max_task))
+    trn_tasks = max_task - len(args.skip_tasks)
+    acc_taw = np.zeros((trn_tasks, trn_tasks))
+    acc_tag = np.zeros((trn_tasks, trn_tasks))
+    forg_taw = np.zeros((trn_tasks, trn_tasks))
+    forg_tag = np.zeros((trn_tasks, trn_tasks))
+    trn_counter = 0
     for t, (_, ncla, trn_tsk) in enumerate(taskcla):
         # Early stop tasks if flag
         if t >= max_task:
@@ -290,8 +295,13 @@ def main(argv=None):
         print('Task {:2d}'.format(t))
         print('*' * 108)
 
-        # Add head for current task
-        net.add_head(taskcla[t][1])
+        # Add/Modify head for current task
+        if t in args.skip_tasks:
+            dest_task = args.dest_tasks[args.moved_tasks.index(t)]
+            print("Adding Actions of Task {} to Task {}".format(t, dest_task))
+            net.modify_head(dest_task, taskcla[dest_task][1]+1)
+        else:
+            net.add_head(taskcla[t][1])
         net.to(device)
 
         # GridSearch
@@ -318,25 +328,33 @@ def main(argv=None):
             print('-' * 108)
 
         # Train
-        appr.train(t, trn_loader[t], val_loader[t], trn_tsk)
-
+        appr.train(trn_counter, trn_loader[t], val_loader[t], trn_tsk)
         print('-' * 108)
 
         # Test
-        for u in range(t + 1):
-            test_loss, acc_taw[t, u], acc_tag[t, u] = appr.eval(u, tst_loader[u])
-            if u < t:
-                forg_taw[t, u] = acc_taw[:t, u].max(0) - acc_taw[t, u]
-                forg_tag[t, u] = acc_tag[:t, u].max(0) - acc_tag[t, u]
-            print('>>> Test on task {:2d} : loss={:.3f} | TAw acc={:5.1f}%, forg={:5.1f}%'
-                  '| TAg acc={:5.1f}%, forg={:5.1f}% <<<'.format(u, test_loss,
-                                                                 100 * acc_taw[t, u], 100 * forg_taw[t, u],
-                                                                 100 * acc_tag[t, u], 100 * forg_tag[t, u]))
-            logger.log_scalar(task=t, iter=u, name='loss', group='test', value=test_loss)
-            logger.log_scalar(task=t, iter=u, name='acc_taw', group='test', value=100 * acc_taw[t, u])
-            logger.log_scalar(task=t, iter=u, name='acc_tag', group='test', value=100 * acc_tag[t, u])
-            logger.log_scalar(task=t, iter=u, name='forg_taw', group='test', value=100 * forg_taw[t, u])
-            logger.log_scalar(task=t, iter=u, name='forg_tag', group='test', value=100 * forg_tag[t, u])
+        if trn_tsk:
+            for u in range(trn_counter + 1):
+                test_loss, acc_taw[trn_counter, u], acc_tag[trn_counter, u] = appr.eval(u, tst_loader[u])
+                if u < trn_counter:
+                    forg_taw[trn_counter, u] = acc_taw[:trn_counter, u].max(0) - acc_taw[trn_counter, u]
+                    forg_tag[trn_counter, u] = acc_tag[:trn_counter, u].max(0) - acc_tag[trn_counter, u]
+                print('>>> Test on task {:2d} : loss={:.3f} | TAw acc={:5.1f}%, forg={:5.1f}%'
+                      '| TAg acc={:5.1f}%, forg={:5.1f}% <<<'.format(u, test_loss,
+                                                                     100 * acc_taw[trn_counter, u], 100 * forg_taw[trn_counter, u],
+                                                                     100 * acc_tag[trn_counter, u], 100 * forg_tag[trn_counter, u]))
+                logger.log_scalar(task=trn_counter, iter=u, name='loss', group='test', value=test_loss)
+                logger.log_scalar(task=trn_counter, iter=u, name='acc_taw', group='test', value=100 * acc_taw[trn_counter, u])
+                logger.log_scalar(task=trn_counter, iter=u, name='acc_tag', group='test', value=100 * acc_tag[trn_counter, u])
+                logger.log_scalar(task=trn_counter, iter=u, name='forg_taw', group='test', value=100 * forg_taw[trn_counter, u])
+                logger.log_scalar(task=trn_counter, iter=u, name='forg_tag', group='test', value=100 * forg_tag[trn_counter, u])
+            trn_counter+=1
+        else:
+            tst_loader[dest_task] = torch.utils.data.DataLoader(tst_loader[dest_task].dataset + tst_loader[trn_counter].dataset,
+                                                                batch_size=tst_loader[dest_task].batch_size,
+                                                                shuffle=True,
+                                                                num_workers=tst_loader[dest_task].num_workers,
+                                                                pin_memory=tst_loader[dest_task].pin_memory)
+            tst_loader.pop(trn_counter)
 
         # Save
         print('Save at ' + os.path.join(args.results_path, full_exp_name))
@@ -347,7 +365,7 @@ def main(argv=None):
         logger.save_model(net.state_dict(), task=t)
         logger.log_result(acc_taw.sum(1) / np.tril(np.ones(acc_taw.shape[0])).sum(1), name="avg_accs_taw", step=t)
         logger.log_result(acc_tag.sum(1) / np.tril(np.ones(acc_tag.shape[0])).sum(1), name="avg_accs_tag", step=t)
-        aux = np.tril(np.repeat([[tdata[1] for tdata in taskcla[:max_task]]], max_task, axis=0))
+        aux = np.tril(np.repeat([[tdata[1] for tdata in taskcla[:trn_tasks]]], trn_tasks, axis=0))
         logger.log_result((acc_taw * aux).sum(1) / aux.sum(1), name="wavg_accs_taw", step=t)
         logger.log_result((acc_tag * aux).sum(1) / aux.sum(1), name="wavg_accs_tag", step=t)
 
