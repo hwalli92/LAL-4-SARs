@@ -6,7 +6,7 @@ from matplotlib.figure import Figure
 
 import wx
 import os
-import glob
+import yaml
 import numpy as np
 
 class MyFrame(wx.Frame):    
@@ -21,8 +21,9 @@ class MyFrame(wx.Frame):
         self.sel_metric = wx.Button(self.left_split, label='Select Metric', pos=(5, 5))
         self.sel_metric.Bind(wx.EVT_BUTTON, self.select_metric)
 
-        self.dir = "LAL-4-SARs/results"
-        self.data_list = self.get_available_data()
+        self.dir = "results"
+        self.data = self.get_available_data()
+        self.data_list = list(self.data.keys())
         self.dl = wx.ListBox(self.left_split, name="Available Data", size=(400, 200), pos=(5, 50), style=wx.LB_MULTIPLE, choices=self.data_list)
 
         self.classes = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
@@ -43,7 +44,9 @@ class MyFrame(wx.Frame):
         dlg.Destroy()
 
     def get_available_data(self):
-        folder_list = sorted(sorted(os.listdir(self.dir)))
+        #folder_list = sorted(sorted(os.listdir(self.dir)))
+        with open(self.dir + "/results_config.yaml", 'r') as f:
+            folder_list = yaml.load(f)
         return folder_list
 
     def update_classes(self, event):
@@ -52,10 +55,10 @@ class MyFrame(wx.Frame):
         self.classes = [int(x) for x in new_classes.split()]
         print(self.classes)
 
-    def load_data(self, metric):
+    def load_data(self, datas, metric):
         plot_data = []
 
-        for data in self.dl.GetSelections():
+        for data in datas:
             res_dir = os.path.join(self.dir, self.data_list[data] + "/results/")
             for file in os.listdir(res_dir):
                 if file.startswith("avg_accs_taw") and metric=="TAw Acc":
@@ -78,15 +81,17 @@ class MyFrame(wx.Frame):
         return plot_data
 
     def plot(self, event):
+        s = self.dl.GetSelections()
+        m = self.sel_metric.GetLabel()
 
-        if self.sel_metric.GetLabel() in ["TAw Acc", "TAg Acc", "TAw Forg", "TAg Forg"]:
-            plot_data = self.load_data(self.sel_metric.GetLabel())
+        if m in ["TAw Acc", "TAg Acc", "TAw Forg", "TAg Forg"]:
+            plot_data = self.load_data(s, m)
 
             for idx, d in enumerate(plot_data):
-               self.plt_win.axes.plot(self.classes, d*100, label=self.data_list[self.dl.GetSelections()[idx]])
+               self.plt_win.axes.plot(self.data[self.data_list[s[idx]]]["classes"], d*100, label=self.data[self.data_list[s[idx]]]["label"])
 
-            self.plt_win.axes.set_xticks(self.classes)
-            if self.sel_metric.GetLabel() in ["TAw Acc", "TAg Acc"]:
+            self.plt_win.axes.set_xticks(np.arange(2, 21, 2))
+            if m in ["TAw Acc", "TAg Acc"]:
                 self.plt_win.axes.set_yticks(np.arange(45, 101, 5))
                 self.plt_win.axes.set_ylabel("Accuracy %")
             else:
