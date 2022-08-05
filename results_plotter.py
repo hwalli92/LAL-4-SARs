@@ -26,14 +26,10 @@ class MyFrame(wx.Frame):
         self.data_list = list(self.data.keys())
         self.dl = wx.ListBox(self.left_split, name="Available Data", size=(400, 200), pos=(5, 50), style=wx.LB_MULTIPLE, choices=self.data_list)
 
-        self.classes = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-        self.classes_input = wx.TextCtrl(self.left_split, value=" ".join(str(x) for x in self.classes), size=(400, 25), pos=(5, 300), style=wx.TE_PROCESS_ENTER)
-        self.classes_input.Bind(wx.EVT_TEXT_ENTER, self.update_classes)
-
-        self.plt_btn = wx.Button(self.left_split, label='Plot', pos=(5, 400))
+        self.plt_btn = wx.Button(self.left_split, label='Plot', pos=(5, 300))
         self.plt_btn.Bind(wx.EVT_BUTTON, self.plot)
 
-        self.clr_btn = wx.Button(self.left_split, label='Clear', pos=(5, 450))
+        self.clr_btn = wx.Button(self.left_split, label='Clear', pos=(100, 300))
         self.clr_btn.Bind(wx.EVT_BUTTON, self.clear_plot)
 
     def select_metric(self, event):
