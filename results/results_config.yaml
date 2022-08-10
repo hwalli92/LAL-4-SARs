@@ -30,16 +30,28 @@ ctrgcn_icarl_random_400exemplars:
   label: CTRGCN, iCaRL, Random, Fixed
   classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
 
+ctrgcn_lwf_herding_400exemplars:
+  label: CTRGCN, LWF, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lwf_herding_20exemplarsperclass:
+  label: CTRGCN, LWF, Herding, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lwf_random_400exemplars:
+  label: CTRGCN, LWF, Random, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lwf_random_20exemplarsperclass:
+  label: CTRGCN, LWF, Random, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
 ctrgcn_il2m_herding_400exemplars:
   label: CTRGCN, IL2M, Herding, Fixed
   classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
 
 ctrgcn_lucir_herding_400exemplars:
   label: CTRGCN, LUCIR, Herding, Fixed
-  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-
-ctrgcn_lwf_herding_400exemplars:
-  label: CTRGCN, LWF, Herding, Fixed
   classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
 
 ctrgcn_eeil_herding_400exemplars:
@@ -76,6 +88,22 @@ msg3d_icarl_random_20exemplarsperclass:
 
 msg3d_icarl_random_400exemplars:
   label: MSG3D, iCaRL, Random, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lwf_herding_400exemplars:
+  label: MSG3D, LWF, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lwf_herding_20exemplarsperclass:
+  label: MSG3D, LWF, Herding, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lwf_random_400exemplars:
+  label: MSG3D, LWF, Random, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lwf_random_20exemplarsperclass:
+  label: MSG3D, LWF, Random, Growing
   classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
 
 ctrgcn_bic_herding_400exemplars_baseline:
