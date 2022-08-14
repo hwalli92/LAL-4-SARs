@@ -9,11 +9,11 @@ def main(args):
 
         if args.benchmark == 'xsub':
             work_dir = args.work_dir + "ntu/{}/ctrgcn_{}".format(args.benchmark, args.modality)
-            subprocess.call('python3 CTR-GCN/main.py --config config/ctrgcn/nturgbd-cross-subject/train_{}.yaml --work-dir {} --device {}'.format(args.modality, work_dir, args.device), shell=True)
+            subprocess.call('python3 CTR-GCN/main.py --config config/ctrgcn/{}_{}.yaml --work-dir {} --device {}'.format(args.benchmark, args.modality, work_dir, args.device), shell=True)
 
         elif args.benchmark == 'xview':
             work_dir = args.work_dir + "ntu/{}/ctrgcn_{}".format(args.benchmark, args.modality)
-            subprocess.call('python3 CTR-GCN/main.py --config config/ctrgcn/nturgbd-cross-view/train_{}.yaml --work-dir {} --device {}'.format(args.modality, work_dir, args.device), shell=True)
+            subprocess.call('python3 CTR-GCN/main.py --config config/ctrgcn/{}_{}.yaml --work-dir {} --device {}'.format(args.benchmark, args.modality, work_dir, args.device), shell=True)
 
         else:
             print("Invalid Benchmark")
@@ -22,11 +22,11 @@ def main(args):
 
         if args.benchmark == 'xsub':
             work_dir = args.work_dir + "ntu/{}/msg3d_{}".format(args.benchmark, args.modality)
-            subprocess.call('python3 MS-G3D/main.py --config config/msg3d/nturgbd-cross-subject/train_{}.yaml --work-dir {} --device {}'.format(args.modality, work_dir, args.device), shell=True)
+            subprocess.call('python3 MS-G3D/main.py --config config/msg3d/{}_{}_{}.yaml --work-dir {} --device {}'.format(args.benchmark, args.phase, args.modality, work_dir, args.device), shell=True)
 
         elif args.benchmark == 'xview':
-            work_dir = args.work_dir + "ntu/{}/ctrgcn_{}".format(args.benchmark, args.modality)
-            subprocess.call('python3 MS-G3D/main.py --config config/msg3d/nturgbd-cross-view/train_{}.yaml --work-dir {} --device {}'.format(args.modality, work_dir, args.device), shell=True)
+            work_dir = args.work_dir + "ntu/{}/msg3d_{}".format(args.benchmark, args.modality)
+            subprocess.call('python3 MS-G3D/main.py --config config/msg3d/{}_{}_{}.yaml --work-dir {} --device {}'.format(args.benchmark, args.phase, args.modality, work_dir, args.device), shell=True)
 
         else:
             print("Invalid Benchmark")
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--model', required=True)
     parser.add_argument('--work-dir', default='./work_dir/')
-    parser.add_argument('--device', type=int, default=0)
+    parser.add_argument('--device', type=int, default=1)
     parser.add_argument('--phase', default='train')
     parser.add_argument('--benchmark', default='xsub')
     parser.add_argument('--modality', default='joint')

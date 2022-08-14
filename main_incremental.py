@@ -238,10 +238,15 @@ def main(argv=None):
 
     # Loaders
     utils.seed_everything(seed=args.seed)
-    if 'ntu' in args.datasets:
+    if 'ntu' in args.datasets and args.cpertask == 'None':
         trn_loader, val_loader, tst_loader, taskcla = get_loaders(args.datasets, args.num_tasks, args.nc_first_task,
                                                               args.batch_size, num_workers=args.num_workers,
                                                               pin_memory=args.pin_memory, cpertask=None, skip_tasks=args.skip_tasks,
+                                                              train_args=args.train_data_args, test_args=args.test_data_args)
+    elif 'ntu' in args.datasets:
+        trn_loader, val_loader, tst_loader, taskcla = get_loaders(args.datasets, args.num_tasks, args.nc_first_task,
+                                                              args.batch_size, num_workers=args.num_workers,
+                                                              pin_memory=args.pin_memory, cpertask=args.cpertask, skip_tasks=args.skip_tasks,
                                                               train_args=args.train_data_args, test_args=args.test_data_args)
     else:
         trn_loader, val_loader, tst_loader, taskcla = get_loaders(args.datasets, args.num_tasks, args.nc_first_task,
