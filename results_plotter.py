@@ -32,6 +32,9 @@ class MyFrame(wx.Frame):
         self.clr_btn = wx.Button(self.left_split, label='Clear', pos=(100, 300))
         self.clr_btn.Bind(wx.EVT_BUTTON, self.clear_plot)
 
+        self.save_btn = wx.Button(self.left_split, label='Save', pos=(200, 300))
+        self.save_btn.Bind(wx.EVT_BUTTON, self.save_plot)
+
     def select_metric(self, event):
         dlg = wx.SingleChoiceDialog(None, "Pick a Metric", "Metrics", ["TAw Acc", "TAg Acc", "TAw Forg", "TAg Forg"], wx.CHOICEDLG_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
@@ -100,6 +103,9 @@ class MyFrame(wx.Frame):
 
     def clear_plot(self, event):
         self.plt_win.axes.clear()
+
+    def save_plot(self, event):
+        self.plt_win.figure.savefig("../{}.png".format(self.sel_metric.GetLabel())) 
 
 class PlotPanel(wx.Panel):
     def __init__(self, parent):
