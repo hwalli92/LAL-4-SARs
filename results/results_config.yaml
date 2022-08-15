@@ -55,7 +55,7 @@ ctrgcn_lucir_herding_20exemplarsperclass:
   classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
 
 ctrgcn_lucir_random_400exemplars:
-  label: CTRGCN, LUCIR, Growing, Fixed
+  label: CTRGCN, LUCIR, Random, Fixed
   classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
 
 ctrgcn_lucir_random_20exemplarsperclass:
