@@ -99,6 +99,7 @@ class MyFrame(wx.Frame):
 
             self.plt_win.axes.set_xlabel("# of classes")
             self.plt_win.axes.legend(loc='upper center', bbox_to_anchor=(0.5, 1.15))
+            self.plt_win.axes.grid()
             self.plt_win.canvas.draw()
 
     def clear_plot(self, event):
