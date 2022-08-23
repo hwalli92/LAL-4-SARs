@@ -222,6 +222,10 @@ ctrgcn_bic_herding_20exemplarsperclass_testseq2:
   label: CTRGCN, BIC, Herding, Growing, Test2
   classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
 
+ctrgcn_bic_herding_100exemplarsperclass_testseq2:
+  label: CTRGCN, BIC, Herding, Growing(100), Test2
+  classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
+
 ctrgcn_icarl_herding_400exemplars_testseq2:
   label: CTRGCN, iCaRL, Herding, Fixed, Test2
   classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
