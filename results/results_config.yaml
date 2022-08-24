@@ -6,6 +6,10 @@ ctrgcn_bic_herding_50exemplarsperclass:
   label: CTRGCN, BIC, Herding, Growing(50)
   classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
 
+ctrgcn_bic_herding_100exemplarsperclass:
+  label: CTRGCN, BIC, Herding, Growing(100)
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
 ctrgcn_bic_herding_400exemplars:
   label: CTRGCN, BIC, Herding, Fixed
   classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
