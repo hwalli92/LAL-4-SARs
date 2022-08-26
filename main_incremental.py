@@ -367,12 +367,20 @@ def main(argv=None):
         logger.log_result(acc_tag, name="acc_tag", step=t)
         logger.log_result(forg_taw, name="forg_taw", step=t)
         logger.log_result(forg_tag, name="forg_tag", step=t)
-        logger.save_model(net.state_dict(), task=t)
         logger.log_result(acc_taw.sum(1) / np.tril(np.ones(acc_taw.shape[0])).sum(1), name="avg_accs_taw", step=t)
         logger.log_result(acc_tag.sum(1) / np.tril(np.ones(acc_tag.shape[0])).sum(1), name="avg_accs_tag", step=t)
         aux = np.tril(np.repeat([[tdata[1] for tdata in taskcla[:trn_tasks]]], trn_tasks, axis=0))
         logger.log_result((acc_taw * aux).sum(1) / aux.sum(1), name="wavg_accs_taw", step=t)
         logger.log_result((acc_tag * aux).sum(1) / aux.sum(1), name="wavg_accs_tag", step=t)
+
+        if args.approach == "bic":
+            bias_dict = []
+            for layer in appr.bias_layers:
+                bias_dict.append(layer.state_dict())
+            logger.save_model(net.state_dict(), task=t, bias_layers=bias_dict)
+        else:
+            logger.save_model(net.state_dict(), task=t)
+
 
         # Last layer analysis
         if args.last_layer_analysis:
