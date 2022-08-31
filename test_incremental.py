@@ -2,13 +2,13 @@ import sys
 import os
 import time
 import torch
+from tqdm import tqdm
 import argparse
 import importlib
 import yaml
 import numpy as np
 
 sys.path.append("./FACIL/src")
-from approach.bic import Appr, BiasLayer
 from networks.network import LLL_Net
 from datasets.ntu_dataset import NTUDataset
 
@@ -22,7 +22,7 @@ def main(argv=None):
     parser.add_argument("--gpu", type=int, default=1, help="GPU (default=%(default)s)")
     parser.add_argument(
         "--config",
-        default="./config/IL_config.yaml",
+        default="./config/IL_test_config.yaml",
         type=str,
         help="Network architecture used (default=%(default)s)",
     )
@@ -36,33 +36,29 @@ def main(argv=None):
     parser.add_argument(
         "--model-path",
         type=str,
-        default="results/ntu_bic_save_model/models/",
+        default="./results/ntu_bic_save_model/",
         help="Results path (default=%(default)s)",
     )
     parser.add_argument(
-        "--data-path", default="", type=str, help="Test data path (default=%(default)s)"
-    )
-    parser.add_argument(
-        "--joints-mask",
-        default=[],
-        type=int,
-        choices=range(0, 25, 1),
-        help="Joint numbers to mask (default=%(default)s)",
-    )
-    parser.add_argument(
-        "--num-tasks",
-        type=int,
-        default=10,
-        help="Number of Tasks (default=%(default)s)",
+        "--data-path", default="./CTR-GCN/data/ntu/NTU60_CS.npz", type=str, help="Test data path (default=%(default)s)"
     )
 
     args, extra_args = parser.parse_known_args(argv)
-    args.results_path = os.path.expanduser(args.results_path)
+    args.model_path = os.path.expanduser(args.model_path)
     with open(args.config, "r") as f:
         config_args = yaml.load(f)
 
     default_arg = config_args["task_args"]
     default_arg.update(config_args[args.network])
+
+    parser.set_defaults(**default_arg)
+    args, extra_args = parser.parse_known_args(argv)
+
+    print('=' * 108)
+    print('Arguments: ')
+    for arg in np.sort(list(vars(args).keys())):
+        print('\t' + arg + ':', getattr(args, arg))
+    print('=' * 108)
 
     # Init Device
     device = init_device(args)
@@ -71,64 +67,102 @@ def main(argv=None):
     test_loader = load_data(args)
 
     # Load Model
-    model, bias_layers = load_model(args)
-    appr = Appr(model, device)
-    if bias_layers is not None:
-        appr.bias_layers = bias_layers
+    model, bias_layers = load_model(args, device)
 
     # Eval Model
-    acc_taw = np.zeros(args.num_tasks)
-    acc_tag = np.zeros(args.num_tasks)
+    with torch.no_grad():
+        total_hits, total_num = 0, 0
+        model.eval()
+        process = tqdm(test_loader, dynamic_ncols=True)
+        for idx, (skeletons, targets) in enumerate(process):
+            # Forward model
+            outputs = model(skeletons.to(device))
+            # Using BiC IL approach
+            if bias_layers is not None:
+                outputs = bic_forward(device, bias_layers, outputs)
 
-    for t in range(args.num_tasks):
-        loss, acc_taw[trn_counter, u], acc_tag[trn_counter, u] = appr.eval(
-            t, test_loader[t]
-        )
+            pred = torch.zeros_like(targets.to(device))
+            pred = torch.cat(outputs, dim=1).argmax(1)
+            targets = torch.tensor(targets, device="cuda")
+            hits = (pred == targets).float()
 
-        print(
-            "Test on Task {:2d}: TAw Acc={}% | TAg Acc={}%".format(
-                t, 100 * acc_taw[t], 100 * acc_tag[t]
-            )
-        )
+            # Log
+            total_hits += hits.sum().item()
+            total_num += len(targets)
 
-    def init_device(args):
-        if torch.cuda.is_available():
-            torch.cuda.set_device(args.gpu)
-            device = "cuda"
-        else:
-            print("WARNING: [CUDA unavailable] Using CPU instead!")
-            device = "cpu"
 
-    def load_data(args):
-        pass
+    print('Total Accuracy = {:.2f}%'.format((total_hits /total_num) * 100))
 
-    def load_model(args, device):
-        if args.network == "ctrgcn":
-            sys.path.append("./CTR-GCN")
-            mod_str, _sep, class_str = args.model.rpartition(".")
-            __import__(mod_str)
-            net = getattr(sys.modules[mod_str], class_str)
-            init_model = net(**args.model_args)
-            init_model.head_var = "fc"
+def init_device(args):
+    if torch.cuda.is_available():
+        torch.cuda.set_device(args.gpu)
+        device = "cuda"
+    else:
+        print("WARNING: [CUDA unavailable] Using CPU instead!")
+        device = "cpu"
 
-        model = LLL_Net(init_model)
+def load_data(args):
+    npz_data = np.load(args.data_path)
+    x = npz_data['x_test']
+    y = np.where(npz_data['y_test'] > 0)[1]
+    N, T, _ = x.shape
+    x = x.reshape((N, T, 2, 25, 3)).transpose(0, 4, 1, 3, 2)
 
-        pretrained = torch.load(args.model_path + "task9.chpt")
-        model.load_state_dict(pretrained["model"])
-        model.to(device)
+    data = {'x': [], 'y': []}
 
-        if pretrained["bias_layers"] is not None:
-            bias_layers = []
-            for layer in pretrained["bias_layers"]:
-                bias_layer = BiasLayer()
-                bias_layer.load_state_dict(layer)
-                bias_layer.to(device)
-                bias_layers.append(bias_layer)
-        else:
-            bias_layers = None
+    for skeleton, action in zip(x, y):
+        for j in args.joints_to_mask:
+            skeleton[:,:,j,:] = 0
+        action = args.action_list.index(action)
+        data['x'].append(skeleton)
+        data['y'].append(action)
 
-        return model, bias_layers
+    print(data['x'][0][:,:,0,:])
+    test_data = NTUDataset(data, [], **args.test_data_args)
 
+    test_loader = torch.utils.data.DataLoader(test_data, batch_size=args.test_batch_size, shuffle=False, num_workers=4, pin_memory=False)
+
+    return test_loader
+
+def load_model(args, device):
+    if args.network == "ctrgcn":
+        sys.path.append("./CTR-GCN")
+        mod_str, _sep, class_str = args.model.rpartition(".")
+        __import__(mod_str)
+        net = getattr(sys.modules[mod_str], class_str)
+        init_model = net(**args.model_args)
+        init_model.head_var = "fc"
+
+    model = LLL_Net(init_model, remove_existing_head=True)
+
+    pretrained = torch.load(args.model_path + "models/task9.ckpt")
+
+    #Create Model Heads
+    for i in range(args.num_tasks):
+        model.add_head(args.cpertask)
+
+    model.set_state_dict(pretrained["model"])
+    model.to(device)
+
+    if pretrained["bias_layers"] is not None:
+        from approach.bic import Appr, BiasLayer
+        bias_layers = []
+        for layer in pretrained["bias_layers"]:
+            bias_layer = BiasLayer()
+            bias_layer.load_state_dict(layer)
+            bias_layers.append(bias_layer.to(device))
+    else:
+        bias_layers = None
+
+    return model, bias_layers
+
+def bic_forward(device, bias_layers, outputs):
+    """BIC Forward Utility function --- inspired by https://github.com/sairin1202/BIC"""
+    bic_outputs = []
+    for m in range(len(outputs)):
+        out = torch.tensor(outputs[m].clone(), device="cuda")
+        bic_outputs.append(bias_layers[m](out))
+    return bic_outputs
 
 if __name__ == "__main__":
     main()
