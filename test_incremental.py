@@ -36,11 +36,11 @@ def main(argv=None):
     parser.add_argument(
         "--model-path",
         type=str,
-        default="./results/ntu_bic_save_model/",
+        default="./results/ctrgcn_bic_herding_20exemplarsperclass_ntjoints/",
         help="Results path (default=%(default)s)",
     )
     parser.add_argument(
-        "--data-path", default="./CTR-GCN/data/ntu/NTU60_CS.npz", type=str, help="Test data path (default=%(default)s)"
+        "--data-path", default="./CTR-GCN/data/ntu/NTU60_CS_nt.npz", type=str, help="Test data path (default=%(default)s)"
     )
 
     args, extra_args = parser.parse_known_args(argv)
@@ -105,8 +105,9 @@ def load_data(args):
     npz_data = np.load(args.data_path)
     x = npz_data['x_test']
     y = np.where(npz_data['y_test'] > 0)[1]
-    N, T, _ = x.shape
-    x = x.reshape((N, T, 2, 25, 3)).transpose(0, 4, 1, 3, 2)
+    N, T, J = x.shape
+    J = int(J/6)
+    x = x.reshape((N, T, 2, J, 3)).transpose(0, 4, 1, 3, 2)
 
     data = {'x': [], 'y': []}
 
@@ -117,7 +118,6 @@ def load_data(args):
         data['x'].append(skeleton)
         data['y'].append(action)
 
-    print(data['x'][0][:,:,0,:])
     test_data = NTUDataset(data, [], **args.test_data_args)
 
     test_loader = torch.utils.data.DataLoader(test_data, batch_size=args.test_batch_size, shuffle=False, num_workers=4, pin_memory=False)

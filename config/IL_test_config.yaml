@@ -2,8 +2,8 @@
 task_args:
   num_tasks: 10
   cpertask: 2
-#  joints_to_mask: []
-  joints_to_mask: [24, 23, 22, 21, 19, 15]
+  joints_to_mask: []
+#  joints_to_mask: [24, 23, 22, 21, 19, 15]
 #  joints_to_mask: [0, 12, 13, 14, 15, 16, 17, 18, 19]
   action_list: [18, 1, 19, 8, 10, 17, 6, 13, 4, 2, 5, 14, 9, 7, 16, 11, 3, 0, 15, 12]
 
@@ -18,7 +18,7 @@ ctrgcn:
   model: model.ctrgcn.Model
   model_args:
     num_class: 20
-    num_point: 25
+    num_point: 19
     num_person: 2
     graph: graph.ntu_rgb_d.Graph
     graph_args:
