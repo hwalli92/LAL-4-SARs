@@ -278,6 +278,10 @@ ctrgcn_lucir_herding_20exemplarsperclass_testseq2:
   label: CTRGCN, LUCIR, Herding, Growing, Test2
   classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
 
+ctrgcn_bic_herding_20exemplarsperclass_ntjoints:
+  label: CTRGCN, BIC, Herding, Growing, NT Joints
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
 #ctrgcn_icarl_herding_400exemplars_4groups
 #ctrgcn_icarl_herding_400exemplars_9groups
 #ctrgcn_icarl_herding_400exemplars_10groups

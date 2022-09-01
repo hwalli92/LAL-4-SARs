@@ -1,15 +1,15 @@
 [submodule "CTR-GCN"]
 	path = CTR-GCN
-	url = https://github.com/Uason-Chen/CTR-GCN.git
+	url = https://github.com/hwalli92/CTR-GCN.git
 [submodule "MS-G3D"]
 	path = MS-G3D
-	url = https://github.com/kenziyuliu/MS-G3D.git
+	url = https://github.com/hwalli92/MS-G3D.git
 [submodule "EfficientGCNv1"]
 	path = EfficientGCNv1
-	url = https://gitee.com/yfsong0709/EfficientGCNv1.git
+	url = https://gitee.com/hwalli/EfficientGCNv1.git
 [submodule "VA_NN"]
 	path = VA_NN
-	url = https://github.com/jiamingNo1/VA_NN.git
+	url = https://github.com/hwalli92/VA_NN.git
 [submodule "FACIL"]
 	path = FACIL
-	url = https://github.com/mmasana/FACIL.git
+	url = https://github.com/hwalli92/FACIL.git
