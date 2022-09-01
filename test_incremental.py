@@ -1,12 +1,12 @@
 import sys
 import os
-import time
 import torch
-from tqdm import tqdm
+import csv
 import argparse
-import importlib
 import yaml
 import numpy as np
+from tqdm import tqdm
+from sklearn.metrics import confusion_matrix
 
 sys.path.append("./FACIL/src")
 from networks.network import LLL_Net
@@ -14,8 +14,6 @@ from datasets.ntu_dataset import NTUDataset
 
 
 def main(argv=None):
-    tstart = time.time()
-
     # Arguments
     parser = argparse.ArgumentParser(description="Incremental Learning Eval")
 
@@ -36,11 +34,11 @@ def main(argv=None):
     parser.add_argument(
         "--model-path",
         type=str,
-        default="./results/ctrgcn_bic_herding_20exemplarsperclass_ntjoints/",
+        default="./results/ctrgcn_bic_herding_20exemplarsperclass/",
         help="Results path (default=%(default)s)",
     )
     parser.add_argument(
-        "--data-path", default="./CTR-GCN/data/ntu/NTU60_CS_nt.npz", type=str, help="Test data path (default=%(default)s)"
+        "--data-path", default="./CTR-GCN/data/ntu/NTU60_CS.npz", type=str, help="Test data path (default=%(default)s)"
     )
 
     args, extra_args = parser.parse_known_args(argv)
@@ -72,9 +70,12 @@ def main(argv=None):
     # Eval Model
     with torch.no_grad():
         total_hits, total_num = 0, 0
+        label_list = []
+        pred_list = []
         model.eval()
         process = tqdm(test_loader, dynamic_ncols=True)
         for idx, (skeletons, targets) in enumerate(process):
+            label_list.append(targets)
             # Forward model
             outputs = model(skeletons.to(device))
             # Using BiC IL approach
@@ -83,6 +84,7 @@ def main(argv=None):
 
             pred = torch.zeros_like(targets.to(device))
             pred = torch.cat(outputs, dim=1).argmax(1)
+            pred_list.append(pred.data.cpu().numpy())
             targets = torch.tensor(targets, device="cuda")
             hits = (pred == targets).float()
 
@@ -90,6 +92,16 @@ def main(argv=None):
             total_hits += hits.sum().item()
             total_num += len(targets)
 
+    label_list = np.concatenate(label_list)
+    pred_list = np.concatenate(pred_list)
+    confusion = confusion_matrix(label_list, pred_list)
+    list_diag = np.diag(confusion)
+    list_raw_sum = np.sum(confusion, axis=1)
+    each_acc = list_diag / list_raw_sum
+    with open('{}/acc_each_class.csv'.format(args.model_path), 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(each_acc)
+        writer.writerows(confusion)
 
     print('Total Accuracy = {:.2f}%'.format((total_hits /total_num) * 100))
 

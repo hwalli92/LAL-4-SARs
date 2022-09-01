@@ -18,7 +18,7 @@ ctrgcn:
   model: model.ctrgcn.Model
   model_args:
     num_class: 20
-    num_point: 19
+    num_point: 25
     num_person: 2
     graph: graph.ntu_rgb_d.Graph
     graph_args:
