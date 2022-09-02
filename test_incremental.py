@@ -18,28 +18,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Incremental Learning Eval")
 
     parser.add_argument("--gpu", type=int, default=1, help="GPU (default=%(default)s)")
-    parser.add_argument(
-        "--config",
-        default="./config/IL_test_config.yaml",
-        type=str,
-        help="Network architecture used (default=%(default)s)",
-    )
-    parser.add_argument(
-        "--network",
-        default="ctrgcn",
-        type=str,
-        help="Network architecture used (default=%(default)s)",
-        metavar="NETWORK",
-    )
-    parser.add_argument(
-        "--model-path",
-        type=str,
-        default="./results/ctrgcn_bic_herding_20exemplarsperclass/",
-        help="Results path (default=%(default)s)",
-    )
-    parser.add_argument(
-        "--data-path", default="./CTR-GCN/data/ntu/NTU60_CS.npz", type=str, help="Test data path (default=%(default)s)"
-    )
+    parser.add_argument("--config", default="./config/IL_nt_test_config.yaml", type=str, help="Network architecture used (default=%(default)s)")
+    parser.add_argument("--network", default="ctrgcn", type=str, help="Network architecture used (default=%(default)s)", metavar="NETWORK")
 
     args, extra_args = parser.parse_known_args(argv)
     args.model_path = os.path.expanduser(args.model_path)
