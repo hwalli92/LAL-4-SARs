@@ -1,15 +1,20 @@
 [submodule "CTR-GCN"]
 	path = CTR-GCN
 	url = https://github.com/hwalli92/CTR-GCN.git
+        branch = main
 [submodule "MS-G3D"]
 	path = MS-G3D
 	url = https://github.com/hwalli92/MS-G3D.git
+        branch = master
 [submodule "EfficientGCNv1"]
 	path = EfficientGCNv1
 	url = https://gitee.com/hwalli/EfficientGCNv1.git
+        branch = master
 [submodule "VA_NN"]
 	path = VA_NN
 	url = https://github.com/hwalli92/VA_NN.git
+        branch = master
 [submodule "FACIL"]
 	path = FACIL
 	url = https://github.com/hwalli92/FACIL.git
+        branch = master
