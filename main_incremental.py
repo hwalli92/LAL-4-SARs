@@ -377,9 +377,11 @@ def main(argv=None):
             bias_dict = []
             for layer in appr.bias_layers:
                 bias_dict.append(layer.state_dict())
-            logger.save_model(net.state_dict(), task=t, bias_layers=bias_dict)
+            exemplars = [[appr.exemplars_dataset.data, appr.exemplars_dataset.labels], [appr.x_valid_exemplars, appr.y_valid_exemplars]]
+            logger.save_model(net.state_dict(), task=t, exemplars=exemplars, bias_layers=bias_dict)
         else:
-            logger.save_model(net.state_dict(), task=t)
+            exemplars = [[appr.exemplars_dataset.data, appr.exemplars_dataset.labels], [None, None]]
+            logger.save_model(net.state_dict(), task=t, exemplars=exemplars)
 
 
         # Last layer analysis

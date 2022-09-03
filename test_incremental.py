@@ -22,7 +22,6 @@ def main(argv=None):
     parser.add_argument("--network", default="ctrgcn", type=str, help="Network architecture used (default=%(default)s)", metavar="NETWORK")
 
     args, extra_args = parser.parse_known_args(argv)
-    args.model_path = os.path.expanduser(args.model_path)
     with open(args.config, "r") as f:
         config_args = yaml.load(f)
 
@@ -31,6 +30,7 @@ def main(argv=None):
 
     parser.set_defaults(**default_arg)
     args, extra_args = parser.parse_known_args(argv)
+    args.model_path = os.path.expanduser(args.model_path)
 
     print('=' * 108)
     print('Arguments: ')
