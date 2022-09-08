@@ -6,7 +6,7 @@ task_args:
 #  joints_to_mask: [24, 23, 22, 21, 19, 15]
 #  joints_to_mask: [0, 12, 13, 14, 15, 16, 17, 18, 19]
   action_list: [18, 1, 19, 8, 10, 17, 6, 13, 4, 2, 5, 14, 9, 7, 16, 11, 3, 0, 15, 12]
-  model_path: "./results/ctrgcn_bic_herding_20exemplarsperclass_ntjoints/"
+  model_path: "./results/ctrgcn_bic_herding_20exemplarsperclass_ntjoints2/"
   data_path: "./CTR-GCN/data/ntu/NTU60_CS_nt.npz"
 
 # CTR-GCN

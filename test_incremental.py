@@ -8,9 +8,8 @@ import numpy as np
 from tqdm import tqdm
 from sklearn.metrics import confusion_matrix
 
-sys.path.append("./FACIL/src")
-from networks.network import LLL_Net
-from datasets.ntu_dataset import NTUDataset
+from FACIL.networks.network import LLL_Net
+from FACIL.datasets.ntu_dataset import NTUDataset
 
 
 def main(argv=None):
@@ -65,7 +64,7 @@ def main(argv=None):
             pred = torch.zeros_like(targets.to(device))
             pred = torch.cat(outputs, dim=1).argmax(1)
             pred_list.append(pred.data.cpu().numpy())
-            targets = torch.tensor(targets, device="cuda")
+
             hits = (pred == targets).float()
 
             # Log
@@ -137,10 +136,10 @@ def load_model(args, device):
     model.to(device)
 
     if pretrained["bias_layers"] is not None:
-        from approach.bic import Appr, BiasLayer
+        from FACIL.approach.bic import Appr, BiasLayer
         bias_layers = []
         for layer in pretrained["bias_layers"]:
-            bias_layer = BiasLayer()
+            bias_layer = BiasLayer(device)
             bias_layer.load_state_dict(layer)
             bias_layers.append(bias_layer.to(device))
     else:
@@ -152,8 +151,7 @@ def bic_forward(device, bias_layers, outputs):
     """BIC Forward Utility function --- inspired by https://github.com/sairin1202/BIC"""
     bic_outputs = []
     for m in range(len(outputs)):
-        out = torch.tensor(outputs[m].clone(), device="cuda")
-        bic_outputs.append(bias_layers[m](out))
+        bic_outputs.append(bias_layers[m](outputs[m]))
     return bic_outputs
 
 if __name__ == "__main__":

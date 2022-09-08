@@ -8,14 +8,14 @@ import yaml
 import numpy as np
 from functools import reduce
 
-sys.path.append('./FACIL/src')
-import utils
-import approach
-from loggers.exp_logger import MultiLogger
-from datasets.data_loader import get_loaders
-from datasets.dataset_config import dataset_config
-from last_layer_analysis import last_layer_analysis
-from networks import tvmodels, allmodels, set_tvmodel_head_var
+#sys.path.append('./FACIL/src')
+import FACIL.utils as utils
+import FACIL.approach
+from FACIL.loggers.exp_logger import MultiLogger
+from FACIL.datasets.data_loader import get_loaders
+from FACIL.datasets.dataset_config import dataset_config
+from FACIL.last_layer_analysis import last_layer_analysis
+from FACIL.networks import tvmodels, allmodels, set_tvmodel_head_var
 
 
 def main(argv=None):
@@ -67,7 +67,7 @@ def main(argv=None):
     parser.add_argument('--pretrained', action='store_true',
                         help='Use pretrained backbone (default=%(default)s)')
     # training args
-    parser.add_argument('--approach', default='finetuning', type=str, choices=approach.__all__,
+    parser.add_argument('--approach', default='finetuning', type=str, choices=FACIL.approach.__all__,
                         help='Learning approach used (default=%(default)s)', metavar="APPROACH")
     parser.add_argument('--nepochs', default=200, type=int, required=False,
                         help='Number of epochs per training session (default=%(default)s)')
@@ -145,7 +145,7 @@ def main(argv=None):
     ####################################################################################################################
 
     # Args -- Network
-    from networks.network import LLL_Net
+    from FACIL.networks.network import LLL_Net
     if args.network in tvmodels:  # torchvision models
         tvnet = getattr(importlib.import_module(name='torchvision.models'), args.network)
         if args.network == 'googlenet':
@@ -167,27 +167,14 @@ def main(argv=None):
         net = getattr(sys.modules[mod_str], class_str)
         init_model = net(**args.model_args)
         init_model.head_var = 'fc'
-    elif args.network == "efficientgcnsg":
-        sys.path.append('./EfficientGCNv1')
-        import src.model as model
-        from src.dataset.graphs import Graph
-        graph = Graph(args.datasets[0])
-        kwargs = {
-            'data_shape': args.data_shape,
-            'num_class': args.num_classes,
-            'A': torch.Tensor(graph.A),
-            'parts': graph.parts,
-        }
-        init_model = model.create(args.model_type, **(args.model_args), **kwargs)
-        init_model.head_var = 'classifier.fc'
     else:  # other models declared in networks package's init
         net = getattr(importlib.import_module(name='networks'), args.network)
         # WARNING: fixed to pretrained False for other model (non-torchvision)
         init_model = net(pretrained=False)
 
     # Args -- Continual Learning Approach
-    from approach.incremental_learning import Inc_Learning_Appr
-    Appr = getattr(importlib.import_module(name='approach.' + args.approach), 'Appr')
+    from FACIL.approach.incremental_learning import Inc_Learning_Appr
+    Appr = getattr(importlib.import_module(name='FACIL.approach.' + args.approach), 'Appr')
     assert issubclass(Appr, Inc_Learning_Appr)
     appr_args, extra_args = Appr.extra_parser(extra_args)
     print('Approach arguments =')
@@ -197,10 +184,10 @@ def main(argv=None):
 
     # Args -- Exemplars Management
     if 'ntu' in args.datasets:
-        from datasets.exemplars_dataset_ntu import ExemplarsDataset
+        from FACIL.datasets.exemplars_dataset_ntu import ExemplarsDataset
         Appr_ExemplarsDataset = ExemplarsDataset
     else:
-        from datasets.exemplars_dataset import ExemplarsDataset
+        from FACIL.datasets.exemplars_dataset import ExemplarsDataset
         Appr_ExemplarsDataset = Appr.exemplars_dataset_class()
 
     if Appr_ExemplarsDataset:
@@ -377,10 +364,10 @@ def main(argv=None):
             bias_dict = []
             for layer in appr.bias_layers:
                 bias_dict.append(layer.state_dict())
-            exemplars = [[appr.exemplars_dataset.data, appr.exemplars_dataset.labels], [appr.x_valid_exemplars, appr.y_valid_exemplars]]
+            exemplars = {'exm_ds': appr.exemplars_dataset, 'val_exm_x': appr.x_valid_exemplars, 'val_exm_y': appr.y_valid_exemplars}
             logger.save_model(net.state_dict(), task=t, exemplars=exemplars, bias_layers=bias_dict)
         else:
-            exemplars = [[appr.exemplars_dataset.data, appr.exemplars_dataset.labels], [None, None]]
+            exemplars = {'exm_ds': appr.exemplars_dataset, 'val_exm_x': None, 'val_exm_y': None}
             logger.save_model(net.state_dict(), task=t, exemplars=exemplars)
 
 
