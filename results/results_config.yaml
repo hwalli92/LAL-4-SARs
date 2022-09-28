@@ -1,0 +1,287 @@
+ctrgcn_bic_herding_2exemplarsperclass:
+  label: CTRGCN, BIC, Herding, Growing(2)
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_5exemplarsperclass:
+  label: CTRGCN, BIC, Herding, Growing(5)
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_10exemplarsperclass:
+  label: CTRGCN, BIC, Herding, Growing(10)
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_20exemplarsperclass:
+  label: CTRGCN, BIC, Herding, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_50exemplarsperclass:
+  label: CTRGCN, BIC, Herding, Growing(50)
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_100exemplarsperclass:
+  label: CTRGCN, BIC, Herding, Growing(100)
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_40exemplars:
+  label: CTRGCN, BIC, Herding, Fixed(40)
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_100exemplars:
+  label: CTRGCN, BIC, Herding, Fixed(100)
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_200exemplars:
+  label: CTRGCN, BIC, Herding, Fixed(200)
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_400exemplars:
+  label: CTRGCN, BIC, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_1000exemplars:
+  label: CTRGCN, BIC, Herding, Fixed(1000)
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_random_20exemplarsperclass:
+  label: CTRGCN, BIC, Random, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_random_400exemplars:
+  label: CTRGCN, BIC, Random, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_icarl_herding_20exemplarsperclass:
+  label: CTRGCN, iCaRL, Herding, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_icarl_herding_400exemplars:
+  label: CTRGCN, iCaRL, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_icarl_random_20exemplarsperclass:
+  label: CTRGCN, iCaRL, Random, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_icarl_random_400exemplars:
+  label: CTRGCN, iCaRL, Random, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lwf_herding_400exemplars:
+  label: CTRGCN, LWF, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lwf_herding_20exemplarsperclass:
+  label: CTRGCN, LWF, Herding, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lwf_random_400exemplars:
+  label: CTRGCN, LWF, Random, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lwf_random_20exemplarsperclass:
+  label: CTRGCN, LWF, Random, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lucir_herding_400exemplars:
+  label: CTRGCN, LUCIR, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lucir_herding_20exemplarsperclass:
+  label: CTRGCN, LUCIR, Herding, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lucir_random_400exemplars:
+  label: CTRGCN, LUCIR, Random, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_lucir_random_20exemplarsperclass:
+  label: CTRGCN, LUCIR, Random, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_il2m_herding_400exemplars:
+  label: CTRGCN, IL2M, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_eeil_herding_400exemplars:
+  label: CTRGCN, EEIL, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_bic_herding_20exemplarsperclass:
+  label: MSG3D, BIC, Herding, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_bic_herding_400exemplars:
+  label: MSG3D, BIC, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_bic_random_20exemplarsperclass:
+  label: MSG3D, BIC, Random, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_bic_random_400exemplars:
+  label: MSG3D, BIC, Random, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_icarl_herding_20exemplarsperclass:
+  label: MSG3D, iCaRL, Herding, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_icarl_herding_400exemplars:
+  label: MSG3D, iCaRL, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_icarl_random_20exemplarsperclass:
+  label: MSG3D, iCaRL, Random, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_icarl_random_400exemplars:
+  label: MSG3D, iCaRL, Random, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lwf_herding_400exemplars:
+  label: MSG3D, LWF, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lwf_herding_20exemplarsperclass:
+  label: MSG3D, LWF, Herding, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lwf_random_400exemplars:
+  label: MSG3D, LWF, Random, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lwf_random_20exemplarsperclass:
+  label: MSG3D, LWF, Random, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lucir_herding_400exemplars:
+  label: MSG3D, LUCIR, Herding, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lucir_herding_20exemplarsperclass:
+  label: MSG3D, LUCIR, Herding, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lucir_random_400exemplars:
+  label: MSG3D, LUCIR, Growing, Fixed
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+msg3d_lucir_random_20exemplarsperclass:
+  label: MSG3D, LUCIR, Random, Growing
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+ctrgcn_bic_herding_400exemplars_baseline:
+  label: CTRGCN, BIC, Herding, Fixed, Test BL
+  classes: [2, 4, 7, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_bic_herding_20exemplarsperclass_baseline:
+  label: CTRGCN, BIC, Herding, Growing, Test BL
+  classes: [2, 4, 7, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_icarl_herding_400exemplars_baseline:
+  label: CTRGCN, iCaRL, Herding, Fixed, Test BL
+  classes: [2, 4, 7, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_icarl_herding_20exemplarsperclass_baseline:
+  label: CTRGCN, iCaRL, Herding, Growing, Test BL
+  classes: [2, 4, 7, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_lwf_herding_400exemplars_baseline:
+  label: CTRGCN, LWF, Herding, Fixed, Test BL
+  classes: [2, 4, 7, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_lwf_herding_20exemplarsperclass_baseline:
+  label: CTRGCN, LWF, Herding, Growing, Test BL
+  classes: [2, 4, 7, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_lucir_herding_400exemplars_baseline:
+  label: CTRGCN, LUCIR, Herding, Fixed, Test BL
+  classes: [2, 4, 7, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_lucir_herding_20exemplarsperclass_baseline:
+  label: CTRGCN, LUCIR, Herding, Growing, Test BL
+  classes: [2, 4, 7, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_bic_herding_400exemplars_testseq1:
+  label: CTRGCN, BIC, Herding, Fixed, Test1
+  classes: [2, 4, 6, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_bic_herding_20exemplarsperclass_testseq1:
+  label: CTRGCN, BIC, Herding, Growing, Test1
+  classes: [2, 4, 6, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_icarl_herding_400exemplars_testseq1:
+  label: CTRGCN, iCaRL, Herding, Fixed, Test1
+  classes: [2, 4, 6, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_icarl_herding_20exemplarsperclass_testseq1:
+  label: CTRGCN, iCaRL, Herding, Growing, Test1
+  classes: [2, 4, 6, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_icarl_herding_50exemplarsperclass_testseq1:
+  label: CTRGCN, iCaRL, Herding, Growing(50), Test1
+  classes: [2, 4, 6, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_icarl_herding_100exemplarsperclass_testseq1:
+  label: CTRGCN, iCaRL, Herding, Growing(100), Test1
+  classes: [2, 4, 6, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_lwf_herding_400exemplars_testseq1:
+  label: CTRGCN, LWF, Herding, Fixed, Test1
+  classes: [2, 4, 6, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_lwf_herding_20exemplarsperclass_testseq1:
+  label: CTRGCN, LWF, Herding, Growing, Test1
+  classes: [2, 4, 6, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_lucir_herding_400exemplars_testseq1:
+  label: CTRGCN, LUCIR, Herding, Fixed, Test1
+  classes: [2, 4, 6, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_lucir_herding_20exemplarsperclass_testseq1:
+  label: CTRGCN, LUCIR, Herding, Growing, Test1
+  classes: [2, 4, 6, 9, 12, 14, 17, 18, 20]
+
+ctrgcn_bic_herding_400exemplars_testseq2:
+  label: CTRGCN, BIC, Herding, Fixed, Test2
+  classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
+
+ctrgcn_bic_herding_20exemplarsperclass_testseq2:
+  label: CTRGCN, BIC, Herding, Growing, Test2
+  classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
+
+ctrgcn_bic_herding_100exemplarsperclass_testseq2:
+  label: CTRGCN, BIC, Herding, Growing(100), Test2
+  classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
+
+ctrgcn_icarl_herding_400exemplars_testseq2:
+  label: CTRGCN, iCaRL, Herding, Fixed, Test2
+  classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
+
+ctrgcn_icarl_herding_20exemplarsperclass_testseq2:
+  label: CTRGCN, iCaRL, Herding, Growing, Test2
+  classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
+
+ctrgcn_lwf_herding_400exemplars_testseq2:
+  label: CTRGCN, LWF, Herding, Fixed, Test2
+  classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
+
+ctrgcn_lwf_herding_20exemplarsperclass_testseq2:
+  label: CTRGCN, LWF, Herding, Growing, Test2
+  classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
+
+ctrgcn_lucir_herding_400exemplars_testseq2:
+  label: CTRGCN, LUCIR, Herding, Fixed, Test2
+  classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
+
+ctrgcn_lucir_herding_20exemplarsperclass_testseq2:
+  label: CTRGCN, LUCIR, Herding, Growing, Test2
+  classes: [2, 4, 7, 9, 11, 12, 17, 18, 20]
+
+ctrgcn_bic_herding_20exemplarsperclass_ntjoints:
+  label: CTRGCN, BIC, Herding, Growing, NT Joints
+  classes: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+#ctrgcn_icarl_herding_400exemplars_4groups
+#ctrgcn_icarl_herding_400exemplars_9groups
+#ctrgcn_icarl_herding_400exemplars_10groups

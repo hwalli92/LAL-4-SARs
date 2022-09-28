@@ -1,0 +1,2 @@
+/home/hwalli2s/LAL-4-SARs/./FACIL/src/approach/lucir.py:98: UserWarning: Warning: ReLU not removed from last block.
+  warnings.warn("Warning: ReLU not removed from last block.")
