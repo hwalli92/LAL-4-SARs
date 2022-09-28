@@ -100,7 +100,7 @@ followed by general options:
 * `--num-exemplars-per-class`: Growing memory, number of exemplars per class (default=0)
 * `--exemplar-selection`: Exemplar selection method (default='random')
   
-## Incremental Learning Training
+## Incremental Learning Testing
 
 Run the incremental learning training with:
 ```
